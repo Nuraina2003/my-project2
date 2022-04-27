@@ -1,6 +1,7 @@
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
+from django.core.mail import EmailMessage, send_mail
 from django.core.paginator import Paginator
 from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.shortcuts import render, redirect, get_object_or_404
@@ -81,3 +82,23 @@ class LoginUser(DataMixin, LoginView):
 def logout_user(request):
     logout(request)
     return redirect('login')
+
+def send_message(request):
+    send_mail('django test mail', 'this is django test body',
+              '200103126@stu.sdu.edu.kz',
+              ['200103126@stu.sdu.edu.kz','n060103@mail.ru'],
+              fail_silently=False, html_message="<b>Bold text</b><i> Italic text</i>")
+    return render(request, 'art/successfull.html')
+
+def send_message(request):
+    email = EmailMessage(
+        'Hello',
+        'Body goes here',
+        '200103126@stu.sdu.edu.kz',
+        ['200103126@stu.sdu.edu.kz', 'n060103@mail.ru'],
+        headers={'Message-ID': 'foo'},
+
+    )
+    email.attach_file('/Users/Привет/Pictures/Screenshots/2.png')
+    email.send(fail_silently=False)
+    return render(request, 'arts/successfull.html')
